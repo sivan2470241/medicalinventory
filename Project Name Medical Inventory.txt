@@ -1,0 +1,53 @@
+Project Name: Medical Inventory
+----------------------------------
+->Stend(Medical Equipments)
+	
+	Batch-> Expiry Date
+
+	Purchase Order 
+
+	 SlNo	ProductName QTY Price
+	 SlNo	Particulars	UnitPrice QTY TotalPrice
+	
+	ML
+	->Classifier
+
+	OCR-Module
+
+	List the items for verification
+
+	Stock->Tally
+
+
+Oraganisation Charts
+---------------------
+	->Managers(Web App)
+	->Sales Executives(APP)
+	->Office Staff (Web APP)
+
+ 	Web based Application
+	Mobile App
+Modules
+
+1) User Authentication Module
+
+2) API's- Application program interface (REST)
+
+3) Purchase Order Stock Entry based on scanning
+
+4) Notification System
+
+5) Delivery Note/ Delivery Return (Sales)
+
+6) Analytics Dashboard
+
+7) Contact Management
+
+8) Quotation
+
+------------------------------------------------------
+
+React Native- TypeScript
+
+
+
