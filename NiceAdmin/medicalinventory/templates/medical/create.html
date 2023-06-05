@@ -1,0 +1,31 @@
+{% load static %}
+<style>
+  label {
+    font-size: 1rem;
+    color: black;
+  }
+  
+  input{
+    font-size: 1rem;
+    border: 1px solid #ced4da;
+    border-radius: 0.25rem;
+    padding: 0.5rem;
+    background-color: #f5f5f5;
+  }
+  
+  button[type="submit"] {
+    font-size: 1rem;
+  }
+</style>
+
+<link href="{% static '\css\style1.css' %}" rel="stylesheet">
+<div class="form1">
+  <h2>Journel Entry</h2>
+
+<form action ="" method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Submit</button>
+    
+  </form>
+
