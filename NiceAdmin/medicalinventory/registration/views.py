@@ -6,6 +6,7 @@ from .forms import RegistrationForm
 import re
 from django.contrib.auth import authenticate,login
 from django.core.mail import send_mail
+from django.http import HttpResponse
 from django.contrib.auth.forms import AuthenticationForm
 from django.template.loader import render_to_string
 from django.utils.html import strip_tags
@@ -13,7 +14,8 @@ from .models import Registration
 from django.contrib.sites.shortcuts import get_current_site
 from django.utils.crypto import get_random_string
 from django.conf import settings
-from django.core.mail.backends.smtp import EmailBackend
+from datetime import datetime,timedelta
+from django.utils import timezone
 from django.contrib import messages
 
          
@@ -57,19 +59,18 @@ def registration_view(request):
                 if not resume.name.lower().endswith(('.pdf', '.doc', '.docx')):
                     form.add_error('resume', 'Only PDF, DOC, and DOCX formats are allowed for the resume.')
 
-            if form.errors:
-                form = RegistrationForm()
-                return render(request, 'registration/registration.html', {'form': form})
+        
 
             # Save the registration
-            registration.save()
+            send_update_link_email(request, registration)
 
+            messages.success(request, 'Registration successful!')
+            return redirect('success' )
             # Sending email
-            send_update_link_email(request,registration)
-          
-            messages.success(request, 'Registration successful!') 
-    
-    form = RegistrationForm()
+            
+    else:
+
+        form = RegistrationForm()
     return render(request, 'registration/registration.html', {'form': form})
 
 
@@ -77,7 +78,7 @@ def send_update_link_email(request,registration):
     current_site = get_current_site(request)
     registration_link = f"http://{current_site.domain}/registration/update/{registration.registration_id}/"
     subject = "Registration Confirmation and Content Update"
-    html_message = render_to_string('registration/success.html', {'registration_link': registration_link,'registration':registration})
+    html_message = render_to_string('registration/email.html', {'registration_link': registration_link,'registration':registration})
     plain_message = strip_tags(html_message)
     from_email = settings.EMAIL_HOST_USER  # Sender Email Address
     to_email = registration.email
@@ -107,17 +108,14 @@ def content_update_view(request,registration_id):
                 return HttpResponse("success")
         else:
             form = RegistrationForm(instance=registration)
-    except User.DoesNotExist:
+    except Registration.DoesNotExist:
         # Handle invalid or expired registration ID
         # return redirect('invalid_registration')
         return HttpResponse('invalid_registration')
 
-    return render(request, 'content_update.html', {'form': form})
+    return render(request, 'registration/content_update.html', {'form': form})
 
-def success(request,registration_id,registration_link):
-    context = {
-        'registration_id': registration_id,
-        'registration_link': registration_link,
-    }
-    return render(request, 'registration/success.html', context)
+def success(request):
+   
+    return render(request, 'registration/success.html')
 

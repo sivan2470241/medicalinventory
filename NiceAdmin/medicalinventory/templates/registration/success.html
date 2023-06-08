@@ -1,13 +1,7 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <meta charset="UTF-8">
-    <title>Registration Successful</title>
-</head>
-<body>
-    <h2>Registration Successful</h2>
-    <p>Thank you for registering! Your Registration ID is: {{ registration.registration_id }}.</p>
-    <p>Click the link below to update your registration:</p>
-    <a href="{{ registration_link }}">{{ registration_link }}</a>
-</body>
-</html>
+{% if messages %}
+    <ul class="messages">
+        {% for message in messages %}
+            <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+        {% endfor %}
+    </ul>
+{% endif %}

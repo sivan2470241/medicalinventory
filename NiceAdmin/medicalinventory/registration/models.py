@@ -26,7 +26,7 @@ class Registration(models.Model):
     specialized_subject = models.ForeignKey('specializations', on_delete=models.CASCADE)
     photo = models.ImageField(upload_to='photos/', max_length=200)
     resume = models.FileField(upload_to='resumes/', max_length=500)
-   
+    updated_at = models.DateTimeField(auto_now=True)
     def __str__(self):
         
         return self.name
